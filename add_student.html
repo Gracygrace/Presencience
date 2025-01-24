@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Add Student{% endblock %}
+
+{% block container %}
+    <header style="text-align: center; margin-bottom: 30px;">
+        <h2 style="font-size: 28px; color: #333;">Add Student to {{ class_obj.name }}</h2>
+    </header>
+
+    <section style="max-width: 600px; margin: 0 auto; padding: 30px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+            {% csrf_token %}
+            
+            <!-- Student Name -->
+            <label for="name" style="font-size: 16px; color: #333; margin-bottom: 8px;">Student Name:</label>
+            <input type="text" name="name" id="name" required style="padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+            
+            <!-- Student Photo -->
+            <label for="photo" style="font-size: 16px; color: #333; margin-bottom: 8px;">Student Photo:</label>
+            <input type="file" name="photo" id="photo" accept="image/*" required style="padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+            
+            <!-- Submit Button -->
+            <button type="submit" style="padding: 12px 20px; background-color: black; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">
+                Add Student
+            </button>
+        </form>
+    </section>
+{% endblock %}

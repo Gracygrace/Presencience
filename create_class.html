@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Create Class{% endblock %}
+
+{% block container %}
+{% include 'header.html' %}
+
+<style>
+    .create-class-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .create-class-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .create-class-header h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .create-class-header p {
+        font-size: 16px;
+        color: #666;
+    }
+
+    .form-box label {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 8px;
+        display: block;
+        color: #444;
+    }
+
+    .form-box input {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-box input:focus {
+        border-color: #555;
+        outline: none;
+    }
+
+    .form-box button {
+        width: 100%;
+        padding: 12px;
+        background-color: black;
+        color: #ffffff;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-box button:hover {
+        background-color: #004494;
+    }
+
+    .footer-note {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #777;
+    }
+</style>
+
+<div class="create-class-container">
+    <!-- Header Section -->
+    <div class="create-class-header">
+        <h2>Create a New Class</h2>
+        <p>Fill out the form below to add a new class to the system.</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-box">
+        <form method="post">
+            {% csrf_token %}
+            <label for="name">Class Name:</label>
+            <input type="text" name="name" id="name" placeholder="Enter class name" required>
+            <button type="submit">Create Class</button>
+        </form>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="footer-note">
+        <p>Need help? Contact the administrator for support.</p>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

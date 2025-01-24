@@ -1,0 +1,64 @@
+<header style="text-align: center; margin-bottom: 30px;">
+    <h1 style="font-size: 28px; color: #333;">Capture Attendance</h1>
+    <p style="font-size: 18px; color: #666;">Class: <strong>{{ class_obj.name }}</strong></p>
+    <a href="{% url 'class_details' class_obj.id %}" style="color: #fff; background-color: black; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Back to Class Details</a>
+</header>
+
+<section style="max-width: 600px; margin: 0 auto; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <form id="photo-form" action="{% url 'capture_attendance' class_obj.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="class_photo" style="display: block; font-size: 18px; margin-bottom: 10px; font-weight: bold;">Upload Class Photo:</label>
+        <input type="file" name="class_photo" id="class_photo" accept="image/*" style="padding: 10px; margin-bottom: 20px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+        <button type="submit" style="background-color: black; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Submit Attendance</button>
+    </form>
+</section>
+
+<div style="text-align: center; margin: 30px auto;">
+    <button id="live-picture" style="background-color: black; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Click Live Picture</button>
+    <video id="camera-feed" autoplay playsinline style="margin-top: 20px; max-width: 100%; border: 2px solid #ddd; border-radius: 8px;"></video>
+    <canvas id="snapshot" style="display: none;"></canvas>
+</div>
+
+<script>
+    const videoElement = document.getElementById("camera-feed");
+    const canvasElement = document.getElementById("snapshot");
+    const livePictureButton = document.getElementById("live-picture");
+    const fileInput = document.getElementById("class_photo");
+
+    livePictureButton.addEventListener("click", async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoElement.style.display = "block";
+            videoElement.srcObject = stream;
+
+            livePictureButton.textContent = "Capture Photo";
+            livePictureButton.onclick = () => {
+                // Capture photo from video
+                const context = canvasElement.getContext("2d");
+                canvasElement.width = videoElement.videoWidth;
+                canvasElement.height = videoElement.videoHeight;
+                context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+
+                // Convert the captured photo to a Blob
+                canvasElement.toBlob((blob) => {
+                    const file = new File([blob], "live_photo.png", { type: "image/png" });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files; // Assign the file to the file input
+
+                    // Stop the video stream
+                    const tracks = stream.getTracks();
+                    tracks.forEach((track) => track.stop());
+                    videoElement.style.display = "none";
+
+                    alert("Photo captured and added to the upload input.");
+                });
+
+                livePictureButton.textContent = "Click Live Picture";
+            };
+        } catch (error) {
+            console.error("Error accessing camera: ", error);
+            alert("Unable to access the camera. Please check your permissions.");
+        }
+    });
+</script>

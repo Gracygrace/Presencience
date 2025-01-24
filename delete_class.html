@@ -1,0 +1,20 @@
+
+    <header>
+        <h1>Delete Class</h1>
+    </header>
+
+    <section>
+        <p>Are you sure you want to delete the class <strong>{{ class_obj.name }}</strong>?</p>
+        <p>This action cannot be undone.</p>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <button type="submit" style="color: white; background-color: red; border: none; padding: 10px 20px; cursor: pointer;">
+                Yes, Delete
+            </button>
+            <a href="{% url 'home' %}" style="color: white; background-color: gray; text-decoration: none; padding: 10px 20px;">
+                Cancel
+            </a>
+        </form>
+    </section>
+

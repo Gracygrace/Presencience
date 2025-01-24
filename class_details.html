@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Class Details{% endblock %}
+
+{% block container %}
+<header style="text-align: center; margin-bottom: 30px; background-color: white; color: black; padding: 20px 0; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <h1 style="font-size: 28px; font-weight: bold;">Class: {{ class_obj.name }}</h1>
+    <p style="font-size: 18px;">Teacher: <strong>{{ class_obj.teacher.username }}</strong></p>
+</header>
+
+<section style="max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <a href="{% url 'add_student' class_obj.id %}" style="padding: 12px 20px; background-color: black; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">Add a Student</a>
+        <a href="{% url 'list_classes' %}" style="padding: 12px 20px; background-color: #444; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">Back to Class List</a>
+    </div>
+
+    <h2 style="text-align: center; font-size: 24px; color: #333; font-weight: bold; margin-bottom: 20px;">Students in this Class</h2>
+
+    {% if students %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead style="background-color: #f8f9fa;">
+                <tr>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; color: #333;">Name</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; color: #333;">Photo</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; color: #333;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr style="border-bottom: 1px solid #f0f0f0;">
+                        <td style="padding: 12px; color: #333;">{{ student.name }}</td>
+                        <td style="padding: 12px; color: #333;">
+                            {% if student.photo %}
+                                <img src="{{ student.photo.url }}" alt="{{ student.name }}" style="width: 100px; height: auto; border-radius: 4px;">
+                            {% else %}
+                                <span style="color: #999;">No Photo</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 12px; color: #333;">
+                            <a href="{% url 'individual_student_report' student.id %}" style="color: #007bff; text-decoration: none; font-weight: bold;">View Attendance Report</a> | 
+                            <a href="{% url 'delete_student' student.id %}" style="color: #dc3545; text-decoration: none; font-weight: bold;">Remove Student</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="text-align: center; font-size: 16px; color: #777;">No students have been added to this class yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block container %}
+<style>
+    /* Styling for the buttons */
+    .custom-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px;
+        background-color: black;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-button:hover {
+        background-color: #333;
+    }
+
+    .custom-button:active {
+        background-color: #111;
+    }
+
+    /* Center alignment for the container */
+    .center-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    /* Styling for the college logo */
+    .college-logo {
+        width: 200px;
+        height: auto;
+    }
+
+    /* Styling for the college name */
+    .college-name {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="center-container">
+    <!-- College Logo -->
+    <a href="{% url 'home' %}">
+        <img src="{% static 'diatlogo.jpg' %}" alt="College Logo" class="college-logo">
+    </a>
+    
+    <!-- College Name -->
+    <h1 class="college-name">Defence Institute of Advanced Technology<br>(Deemed to be University)</h1>
+</div>
+
+<!-- Welcome Message and Buttons -->
+<div class="center-container">
+    {% if user.is_authenticated %}
+        <!-- Content for authenticated users -->
+        <h2>Welcome, {{ user.username }}</h2>
+        <div>
+            <a href="{% url 'create_class' %}" class="custom-button">Create a Class</a>
+            <a href="{% url 'list_classes' %}" class="custom-button">View Classes</a>
+        </div>
+    {% else %}
+        <!-- Content for unauthenticated users -->
+        <h2>Welcome to the Attendance Manager</h2>
+        <p>Please log in or register to manage classes and attendance.</p>
+        <div>
+            <a href="{% url 'login' %}" class="custom-button">Login</a>
+            <a href="{% url 'register' %}" class="custom-button">Register</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

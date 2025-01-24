@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Student Attendance Report{% endblock %}
+
+{% block container %}
+{% include 'header.html' %}
+
+<header style="text-align: center; margin: 20px 0;">
+    <h1 style="font-weight: bold; color: #333;">{{ student.name }}'s Attendance Report</h1>
+    <h3 style="color: #777;">Class: {{ student.class_name.name }}</h3>
+</header>
+
+<main style="max-width: 900px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <!-- Student Details Section -->
+    <section class="text-center mb-5">
+        <h2 style="color: #333; font-weight: bold;">{{ student.name }}</h2>
+        <p class="text-muted mb-1"><strong>Class:</strong> {{ student.class_name.name }}</p>
+        <p class="text-muted"><strong>Roll Number:</strong> {{ student.roll_number }}</p>
+    </section>
+
+    <!-- Attendance History Section -->
+    <section>
+        <h2 style="color: #333; font-weight: bold; text-align: center; margin-bottom: 20px;">Attendance History</h2>
+        {% if records %}
+        <div class="table-responsive">
+            <table style="width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                <thead style="background-color: #333; color: white;">
+                    <tr>
+                        <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Date</th>
+                        <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: left; color: #555;">
+                            {{ record.date|date:"d M Y" }}
+                        </td>
+                        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: left;">
+                            <span style="font-weight: bold; color: {% if record.is_present %}#28a745{% else %}#dc3545{% endif %};">
+                                {{ record.is_present|yesno:"Present,Absent" }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-secondary text-center" role="alert">
+            No attendance records found for this student.
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Navigation Buttons Section -->
+    <section class="text-center mt-5">
+        <a href="{% url 'list_students' student.class_name.id %}" style="padding: 10px 20px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 16px; margin-right: 10px;">
+            Back to Students List
+        </a>
+        <a href="{% url 'list_classes' %}" style="padding: 10px 20px; text-decoration: none; background-color: black; color: white; border-radius: 5px; font-size: 16px;">
+            Back to Classes
+        </a>
+    </section>
+</main>
+
+{% endblock %}

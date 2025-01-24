@@ -1,0 +1,2 @@
+from home.views.home import home,Class,capture_attendance,create_class,list_classes,delete_class,delete_student,add_student,attendance_report,list_students,individual_student_report,class_details
+from home.views.auth import login_teacher,register_teacher,logout_teacher

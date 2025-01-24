@@ -1,0 +1,42 @@
+<header style="text-align: center; margin: 20px 0;">
+    <h1 style="color: #333;">Students in {{ class_obj.name }}</h1>
+    <h3 style="color: #555;">Instructor: {{ class_obj.teacher.username }}</h3>
+</header>
+
+<main style="max-width: 900px; margin: auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <section style="margin-bottom: 30px;">
+        <h2 style="text-align: center; color: #333;">Student List</h2>
+        {% if students %}
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #ffffff;">
+            <thead>
+                <tr style="background-color: #f8f9fa; color: #333;">
+                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Photo</th>
+                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr style="color: #333;">
+                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+                        <img src="{{ student.photo.url }}" alt="{{ student.name }}'s photo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                    </td>
+                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ student.name }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+                        <a href="{% url 'individual_student_report' student.id %}" style="padding: 5px 10px; text-decoration: none; background-color: #333; color: white; border-radius: 5px; font-size: 14px;">View Report</a>
+                        <a href="{% url 'delete_student' student.id %}" style="padding: 5px 10px; text-decoration: none; background-color: #dc3545; color: white; border-radius: 5px; font-size: 14px; margin-left: 10px;">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; color: #777; font-size: 16px;">No students are currently enrolled in this class.</p>
+        {% endif %}
+    </section>
+
+    <section style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'add_student' class_obj.id %}" style="padding: 10px 20px; text-decoration: none; background-color: black; color: white; border-radius: 5px; font-size: 16px; margin-right: 10px;">Add Student</a>
+        <a href="{% url 'list_classes' %}" style="padding: 10px 20px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 16px;">Back to Classes</a>
+    </section>
+</main>
